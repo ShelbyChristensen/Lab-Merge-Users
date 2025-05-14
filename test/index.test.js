@@ -1,35 +1,22 @@
-const {
-  combineUsers
-  } = require('../index');
-  require('datejs');
+const { combineUsers } = require('../index'); // make sure the path is correct
 
-  describe('combineUsers function return', () => {
-    const combine = combineUsers(["Jim3","Pam5","Dwight77"],["Michael6","Eleanor22","Chidi202"],["Jack_jack","Julia_Oreo", "Bill_bore"])
-    
-    
-    test('should be an object', () => {
-      expect(typeof combine).toBe('object');
-    });
-    test('should have the properties users and merge_date', () => {
-      expect(combine).toHaveProperty('users');
-      expect(combine).toHaveProperty('merge_date');
-    });
+describe('combineUsers', () => {
+  test('merges multiple arrays into one user array', () => {
+    const result = combineUsers(['alice'], ['bob', 'carol'], ['dave']);
+    expect(result.users).toEqual(['alice', 'bob', 'carol', 'dave']);
   });
-  describe('combineUsers function', () => {
-    const combine = combineUsers(["Jim3","Pam5","Dwight77"],["Michael6","Eleanor22","Chidi202"],["Jack_jack","Julia_Oreo", "Bill_bore"])
-    const combine2 = combineUsers(["test1"],["test2"])
-    const combine3 = combineUsers([])
-    
-    test('should merge all given arrays', () => {
-      expect(combine.users).toStrictEqual(["Jim3","Pam5","Dwight77","Michael6","Eleanor22","Chidi202","Jack_jack","Julia_Oreo", "Bill_bore"]);
-      expect(combine2.users).toStrictEqual(["test1","test2"])
-      expect(combine3.users).toStrictEqual([])
-    });
 
-    test('should contain todays date', () => {
-      expect(combine.merge_date).toBe(Date.today().toString("M/d/yyyy"))
-      expect(combine2.merge_date).toBe(Date.today().toString("M/d/yyyy"))
-    });
-    
-  })
-  
+  test('adds a valid merge_date in M/d/yyyy format', () => {
+    const result = combineUsers(['user1']);
+    const today = new Date().toString('M/d/yyyy');
+    expect(result.merge_date).toBe(today);
+  });
+
+  test('works with no input arrays', () => {
+    const result = combineUsers();
+    expect(result.users).toEqual([]);
+    const today = new Date().toString('M/d/yyyy');
+    expect(result.merge_date).toBe(today);
+  });
+});
+
